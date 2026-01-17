@@ -16,9 +16,7 @@ import { LanguageProvider } from './context/LanguageContext';
 const Home = lazy(() => import('./pages/Home'));
 const Works = lazy(() => import('./pages/Works'));
 const Posts = lazy(() => import('./pages/Posts'));
-const Resume = lazy(
-  () => import('./pages/Resume'),
-);
+
 const WorkDetail = lazy(
   () => import('./pages/WorkDetail'),
 );
@@ -41,13 +39,7 @@ const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
-    <div
-      className={`mx-auto px-4 sm:px-6 lg:px-8 pt-24 ${
-        location.pathname === '/resume'
-          ? 'max-w-4xl'
-          : 'max-w-3xl'
-      }`}
-    >
+    <div className="mx-auto px-4 sm:px-6 lg:px-8 pt-24 max-w-3xl">
       <AnimatePresence mode="wait" initial={true}>
         <Suspense fallback={<PageLoader />}>
           <Routes
@@ -67,10 +59,7 @@ const AnimatedRoutes = () => {
               path="/posts"
               element={<Posts />}
             />
-            <Route
-              path="/resume"
-              element={<Resume />}
-            />
+
             <Route
               path="/posts/:id"
               element={<PostDetail />}

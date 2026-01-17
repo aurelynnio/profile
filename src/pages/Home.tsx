@@ -62,7 +62,7 @@ const Home: React.FC = () => {
           <div className="shrink-0">
             <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-stone-100 dark:ring-stone-800 shadow-xl relative group">
               <img
-                src="/img/1.png"
+                src="/img/av.jpg"
                 alt="Profile"
                 width="128"
                 height="128"

@@ -24,17 +24,17 @@ const translations = {
       'Digital Craftsman ( Software Developer / Student )',
     'home.work_title': 'Work',
     'home.work_desc':
-      'Hello everyone, my name is [Anh](#green). I am [21 years old](#purple) and currently an [Information Technology](#green) student at [HUTECH University](#green), expected to graduate in the [2025–2026 academic year](#purple). ' +
+      'Hello everyone, my name is [Anh](#green). I am [21 years old](#purple) and currently pursuing my passion in [Software Development](#green). ' +
       'My goal is to become a [Software Engineer](#green) dedicated to [solving client needs](#yellow) and delivering [reliable technical solutions](#yellow) through code. ' +
-      'I created this blog to share the [knowledge and experiences](#purple) I have gained over the past four years. Thank you for visiting my website—I sincerely appreciate your [support](#underline).',
+      'I created this blog to share the [knowledge and experiences](#purple) I have gained over the years. Thank you for visiting my website—I sincerely appreciate your [support](#underline).',
     'home.portfolio_btn': 'My Portfolio',
     'home.bio_title': 'Bio',
     'home.born':
       'Born in HoChiMinh City (胡志明市), Vietnam.',
     'home.master':
-      'Started studying at Hutech University.',
+      'Started my journey in Information Technology.',
     'home.freelance':
-      'Started journey as a Freelance Developer.',
+      'Started working as a Freelance Developer.',
     'home.love_title': 'I ♥',
     'home.love_desc':
       'Music, [Drawing](#green), Calligraphy, [Photography](#green).',
@@ -60,14 +60,14 @@ const translations = {
     'home.role': '数字工匠 ( 开发者 / 学生 )',
     'home.work_title': '工作',
     'home.work_desc':
-      '大家好，我是 [Anh](#green)。我今年 [21岁](#purple)，目前就读于 [HUTECH](#green) [信息技术专业](#green)，预计将于 [2025-2026](#purple) 学年毕业。' +
+      '大家好，我是 [Anh](#green)。我今年 [21岁](#purple)，对 [软件开发](#green) 充满热情。' +
       '我的职业目标是成为一名 [软件工程师](#green)，致力于通过代码 [解决客户需求](#yellow) 并提供 [可靠的技术解决方案](#yellow)。' +
-      '这是我创建的第一个博客，旨在分享我过去四年中积累的 [知识和学习经验](#purple)。感谢您访问我的网站，[真心感谢您的支持](#underline)。',
+      '这是我创建的博客，旨在分享我多年来积累的 [知识和学习经验](#purple)。感谢您访问我的网站，[真心感谢您的支持](#underline)。',
     'home.portfolio_btn': '作品集',
     'home.bio_title': '经历',
     'home.born': '出生于越南胡志明市。',
-    'home.master': '在河内理工大学完成硕士学位。',
-    'home.freelance': '开启独立开发者之旅。',
+    'home.master': '开始学习信息技术。',
+    'home.freelance': '成为自由开发者。',
     'home.love_title': '爱好',
     'home.love_desc': '艺术，音乐，绘画，书法。',
     'works.title': '精选作品',
