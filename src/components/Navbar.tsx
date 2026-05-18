@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
   return (
     <div className="fixed top-6 w-full z-50 flex justify-center pointer-events-none px-4">
       <nav
-        className="pointer-events-auto flex items-center gap-1 p-1.5 rounded-full bg-[#f0e7db]/25 dark:bg-[#202023]/80 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg ring-1 ring-black/5 dark:ring-white/5 transition-colors duration-500 max-w-full overflow-hidden"
+        className="pointer-events-auto flex items-center gap-1 rounded-full card-surface px-1.5 py-1.5 max-w-full overflow-hidden"
         style={{
           transform: 'translateZ(0)',
           contain: 'layout style',
@@ -46,7 +46,7 @@ const Navbar: React.FC = () => {
                 className={clsx(
                   'relative px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium transition-all duration-300 whitespace-nowrap',
                   isActive
-                    ? 'text-cinnabar dark:text-cinnabar-light font-serif font-bold' // Changed to Cinnabar
+                    ? 'text-cinnabar dark:text-cinnabar-light font-serif font-bold'
                     : 'text-stone-500 dark:text-stone-400 hover:text-ink dark:hover:text-stone-200 font-serif',
                 )}
               >
@@ -54,7 +54,7 @@ const Navbar: React.FC = () => {
                 {isActive && (
                   <motion.div
                     layoutId="navbar-bg"
-                    className="absolute inset-0 bg-stone-100 dark:bg-stone-800 rounded-full shadow-sm z-[-1]"
+                    className="absolute inset-0 rounded-full bg-white/70 dark:bg-stone-800/80 shadow-sm z-[-1]"
                     transition={{
                       type: 'spring',
                       bounce: 0.2,
@@ -67,12 +67,12 @@ const Navbar: React.FC = () => {
           })}
         </div>
 
-        <div className="w-px h-4 bg-stone-300 dark:bg-stone-700 mx-1 shrink-0" />
+        <div className="w-px h-4 bg-stone-300/80 dark:bg-stone-700 mx-1 shrink-0" />
 
         <div className="flex items-center gap-1 pr-1 shrink-0">
           <button
             onClick={toggleLanguage}
-            className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full text-stone-500 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-700/50 transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-full text-stone-500 dark:text-stone-400 hover:bg-stone-200/60 dark:hover:bg-stone-700/60 md:h-9 md:w-9"
             aria-label="Switch Language"
           >
             <span className="font-serif font-bold text-xs md:text-sm pt-0.5">

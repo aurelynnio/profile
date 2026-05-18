@@ -29,8 +29,11 @@ const NotFound = lazy(
 
 // Loading component
 const PageLoader = () => (
-  <div className="flex items-center justify-center min-h-[50vh]">
-    <div className="w-8 h-8 border-4 border-stone-200 border-t-cinnabar rounded-full animate-spin"></div>
+  <div className="loading-state min-h-[50vh]">
+    <div className="flex items-center gap-3 text-sm uppercase tracking-[0.18em] text-faint">
+      <div className="h-8 w-8 rounded-full border-4 border-stone-200 border-t-cinnabar animate-spin dark:border-stone-700 dark:border-t-cinnabar-light" />
+      <span>Loading</span>
+    </div>
   </div>
 );
 
@@ -39,7 +42,7 @@ const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
-    <div className="mx-auto px-4 sm:px-6 lg:px-8 pt-24 max-w-3xl">
+    <div className="page-shell">
       <AnimatePresence mode="wait" initial={true}>
         <Suspense fallback={<PageLoader />}>
           <Routes
@@ -79,7 +82,8 @@ const App: React.FC = () => {
   return (
     <LanguageProvider>
       <Router>
-        <div className="min-h-screen flex flex-col font-sans text-ink dark:text-stone-200 transition-colors duration-500">
+        <div className="app-shell min-h-screen flex flex-col font-sans text-ink dark:text-stone-200 transition-colors duration-500">
+          <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[32rem] bg-[radial-gradient(circle_at_top,rgba(178,75,51,0.12),transparent_55%)] dark:bg-[radial-gradient(circle_at_top,rgba(212,117,89,0.08),transparent_50%)]" />
           <ScrollToTop />
           <Navbar />
 

@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  useEffect,
   useState,
   useContext,
   ReactNode,
@@ -22,6 +23,9 @@ const translations = {
       'Today’s technology, tomorrow’s intelligence.',
     'home.role':
       'Digital Craftsman ( Software Developer / Student )',
+    'home.intro_eyebrow': 'Portfolio',
+    'home.showcase_loading': 'Preparing showcase',
+    'home.showcase_label': 'Automated Showcase',
     'home.work_title': 'Work',
     'home.work_desc':
       'Hello everyone, my name is [Anh](#green). I am [21 years old](#purple) and currently pursuing my passion in [Software Development](#green). ' +
@@ -45,10 +49,30 @@ const translations = {
     'footer.text':
       '© 2025 Guo Ying. Made with morning silence.',
     back: 'Back',
+    'common.loading_title': 'Loading content',
+    'common.loading_desc':
+      'The page is gathering the latest content and layout.',
+    'common.empty_title': 'Nothing here yet',
+    'common.config_title':
+      'Supabase configuration needed',
+    'common.config_desc':
+      'Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY so the portfolio can load works and writing.',
+    'common.unavailable_title':
+      'Content is temporarily unavailable',
+    'common.unavailable_desc':
+      'The request failed or the data source is empty right now.',
     'not_found.title': 'Lost in the Mist',
     'not_found.desc':
       'The page you are looking for has drifted away.',
     'not_found.home_btn': 'Return Home',
+    'works.empty':
+      'Projects will appear here once content is published.',
+    'posts.empty':
+      'Articles will appear here once writing is published.',
+    'project.not_found':
+      'The requested project does not exist or is no longer available.',
+    'post.not_found':
+      'The requested article does not exist or is no longer available.',
   },
   zh: {
     'nav.about': '首页',
@@ -58,6 +82,9 @@ const translations = {
     'home.greeting':
       '你好，我是一名现居越南的独立开发者！',
     'home.role': '数字工匠 ( 开发者 / 学生 )',
+    'home.intro_eyebrow': '作品网站',
+    'home.showcase_loading': '正在准备展示',
+    'home.showcase_label': '自动展示',
     'home.work_title': '工作',
     'home.work_desc':
       '大家好，我是 [Anh](#green)。我今年 [21岁](#purple)，对 [软件开发](#green) 充满热情。' +
@@ -77,11 +104,29 @@ const translations = {
     'footer.text':
       '© 2025 Guo Ying. 于清晨静谧中制作。',
     back: '返回',
+    'common.loading_title': '正在加载内容',
+    'common.loading_desc':
+      '页面正在整理最新内容与版面。',
+    'common.empty_title': '这里暂时还没有内容',
+    'common.config_title': '需要配置 Supabase',
+    'common.config_desc':
+      '请设置 VITE_SUPABASE_URL 与 VITE_SUPABASE_ANON_KEY，作品与文章才能正常加载。',
+    'common.unavailable_title': '内容暂时不可用',
+    'common.unavailable_desc':
+      '当前请求失败，或数据源暂时没有可显示的内容。',
     'not_found.title': '迷失雾中',
     'not_found.desc': '你寻找的页面已随风飘散。',
     'not_found.home_btn': '返回首页',
+    'works.empty': '发布作品后，这里会显示项目列表。',
+    'posts.empty': '发布文章后，这里会显示写作内容。',
+    'project.not_found':
+      '你请求的项目不存在，或暂时无法访问。',
+    'post.not_found':
+      '你请求的文章不存在，或暂时无法访问。',
   },
-};
+} satisfies Record<Language, Record<string, string>>;
+
+type TranslationKey = keyof typeof translations.en;
 
 const LanguageContext = createContext<
   LanguageContextType | undefined
@@ -91,7 +136,26 @@ export const LanguageProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const [language, setLanguage] =
-    useState<Language>('en');
+    useState<Language>(() => {
+      if (typeof window === 'undefined') {
+        return 'en';
+      }
+
+      const storedLanguage =
+        window.localStorage.getItem('language');
+      return storedLanguage === 'zh'
+        ? 'zh'
+        : 'en';
+    });
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      'language',
+      language,
+    );
+    document.documentElement.lang =
+      language === 'zh' ? 'zh-Hans' : 'en';
+  }, [language]);
 
   const toggleLanguage = () => {
     setLanguage((prev) =>
@@ -100,8 +164,10 @@ export const LanguageProvider: React.FC<{
   };
 
   const t = (key: string): string => {
-    // @ts-ignore
-    return translations[language][key] || key;
+    const typedKey = key as TranslationKey;
+    return (
+      translations[language][typedKey] || key
+    );
   };
 
   return (
