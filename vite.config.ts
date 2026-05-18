@@ -32,20 +32,79 @@ export default defineConfig(({ mode }) => {
           drop_debugger: true,
         },
       },
+      chunkSizeWarningLimit: 725,
       rollupOptions: {
         output: {
-          manualChunks: {
-            'react-vendor': [
-              'react',
-              'react-dom',
-              'react-router-dom',
-            ],
-            'three-vendor': [
-              'three',
-              '@react-three/fiber',
-              '@react-three/drei',
-            ],
-            'framer-motion': ['framer-motion'],
+          manualChunks(id) {
+            const normalizedId =
+              id.replace(/\\/g, '/');
+
+            if (
+              !normalizedId.includes('node_modules')
+            ) {
+              return;
+            }
+
+            if (
+              normalizedId.includes('/react/') ||
+              normalizedId.includes('/react-dom/') ||
+              normalizedId.includes(
+                '/react-router-dom/',
+              )
+            ) {
+              return 'react-vendor';
+            }
+
+            if (
+              normalizedId.includes(
+                '/framer-motion/',
+              )
+            ) {
+              return 'framer-motion';
+            }
+
+            if (
+              normalizedId.includes(
+                '/react-markdown/',
+              ) ||
+              normalizedId.includes('/remark-') ||
+              normalizedId.includes('/rehype-') ||
+              normalizedId.includes('/micromark/') ||
+              normalizedId.includes('/mdast-') ||
+              normalizedId.includes('/hast-') ||
+              normalizedId.includes('/unist-') ||
+              normalizedId.includes('/unified/')
+            ) {
+              return 'markdown-vendor';
+            }
+
+            if (
+              normalizedId.includes(
+                '/@react-three/drei/',
+              ) ||
+              normalizedId.includes(
+                '/three-stdlib/',
+              ) ||
+              normalizedId.includes(
+                '/meshline/',
+              )
+            ) {
+              return 'three-helpers';
+            }
+
+            if (
+              normalizedId.includes(
+                '/@react-three/fiber/',
+              )
+            ) {
+              return 'three-fiber';
+            }
+
+            if (
+              normalizedId.includes('/three/')
+            ) {
+              return 'three-core';
+            }
           },
         },
       },
