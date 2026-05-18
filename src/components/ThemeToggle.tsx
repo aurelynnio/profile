@@ -7,32 +7,17 @@ import {
   AnimatePresence,
 } from 'framer-motion';
 import { Sun, Moon } from 'lucide-react';
-import { Theme } from '../types';
-
-const getInitialTheme = (): Theme => {
-  if (typeof window === 'undefined') {
-    return 'light';
-  }
-
-  const storedTheme =
-    window.localStorage.getItem('theme');
-  if (
-    storedTheme === 'light' ||
-    storedTheme === 'dark'
-  ) {
-    return storedTheme;
-  }
-
-  return window.matchMedia(
-    '(prefers-color-scheme: dark)',
-  ).matches
-    ? 'dark'
-    : 'light';
-};
 
 const ThemeToggle: React.FC = () => {
-  const [theme, setTheme] = useState<Theme>(
-    getInitialTheme,
+  const [theme, setTheme] = useState<string>(
+    () => {
+      if (typeof window !== 'undefined') {
+        return (
+          localStorage.getItem('theme') || 'light'
+        );
+      }
+      return 'light';
+    },
   );
 
   useEffect(() => {
@@ -42,7 +27,7 @@ const ThemeToggle: React.FC = () => {
     } else {
       root.classList.remove('dark');
     }
-    window.localStorage.setItem('theme', theme);
+    localStorage.setItem('theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
@@ -54,7 +39,7 @@ const ThemeToggle: React.FC = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="relative rounded-full p-2 text-stone-500 dark:text-stone-400 hover:bg-stone-200/60 dark:hover:bg-stone-700/60"
+      className="relative p-2 rounded-full text-stone-500 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-700/50 transition-colors"
       aria-label="Toggle theme"
     >
       <AnimatePresence

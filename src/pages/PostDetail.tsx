@@ -8,10 +8,10 @@ import {
 } from 'react-router-dom';
 import {
   ArrowLeft,
+  Clock,
   Calendar,
 } from 'lucide-react';
 import Section from '../components/Section';
-import PageState from '../components/PageState';
 import { useLanguage } from '../context/LanguageContext';
 import {
   getPostBySlug,
@@ -19,7 +19,6 @@ import {
 } from '../utils/markdown';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import { format } from 'date-fns';
-import { hasSupabaseConfig } from '../lib/supabase';
 
 const PostDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,24 +27,17 @@ const PostDetail: React.FC = () => {
   const [post, setPost] =
     useState<MarkdownPost | null>(null);
   const [loading, setLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
-      try {
-        if (id) {
-          const data = await getPostBySlug(
-            'writing',
-            id,
-          );
-          setPost(data);
-        }
-      } catch (error) {
-        console.error(error);
-        setHasError(true);
-      } finally {
-        setLoading(false);
+      if (id) {
+        const data = await getPostBySlug(
+          'writing',
+          id,
+        );
+        setPost(data);
       }
+      setLoading(false);
     };
     fetchPost();
     window.scrollTo(0, 0);
@@ -53,38 +45,17 @@ const PostDetail: React.FC = () => {
 
   if (loading) {
     return (
-      <PageState
-        tone="loading"
-        title={t('common.loading_title')}
-        description={t('common.loading_desc')}
-      />
-    );
-  }
-
-  if (hasError) {
-    return (
-      <PageState
-        tone="error"
-        title={
-          hasSupabaseConfig
-            ? t('common.unavailable_title')
-            : t('common.config_title')
-        }
-        description={
-          hasSupabaseConfig
-            ? t('common.unavailable_desc')
-            : t('common.config_desc')
-        }
-      />
+      <div className="pt-20 text-center">
+        Loading...
+      </div>
     );
   }
 
   if (!post) {
     return (
-      <PageState
-        title={t('common.empty_title')}
-        description={t('post.not_found')}
-      />
+      <div className="pt-20 text-center">
+        Post not found
+      </div>
     );
   }
 
@@ -93,7 +64,7 @@ const PostDetail: React.FC = () => {
       <Section>
         <button
           onClick={() => navigate('/posts')}
-          className="btn-secondary mb-8"
+          className="group flex items-center gap-2 text-stone-500 hover:text-jade transition-colors mb-8 text-sm font-medium"
         >
           <ArrowLeft
             size={16}
@@ -105,15 +76,12 @@ const PostDetail: React.FC = () => {
 
       <article>
         <Section delay={0.1}>
-          <div className="mx-auto mb-12 max-w-3xl text-center">
-            <span className="eyebrow mb-5">
-              Writing
-            </span>
-            <h1 className="mb-6 text-4xl font-serif leading-tight text-ink dark:text-stone-100 md:text-5xl">
+          <div className="text-center mb-12 max-w-2xl mx-auto">
+            <h1 className="text-3xl md:text-4xl font-serif font-bold text-ink dark:text-stone-100 mb-6 leading-tight">
               {post.title}
             </h1>
-            <div className="mb-8 flex items-center justify-center gap-6 text-sm font-mono text-stone-500 dark:text-stone-400">
-              <span className="meta-pill">
+            <div className="flex items-center justify-center gap-6 text-sm text-stone-500 dark:text-stone-400 font-mono mb-8">
+              <span className="flex items-center gap-2">
                 <Calendar size={14} />{' '}
                 {format(
                   new Date(post.date),
@@ -123,11 +91,11 @@ const PostDetail: React.FC = () => {
             </div>
 
             {post.thumbnail && (
-              <div className="card-surface-strong aspect-video w-full overflow-hidden rounded-[2rem]">
+              <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-md border border-stone-200 dark:border-stone-700">
                 <img
                   src={post.thumbnail}
                   alt={post.title}
-                  className="h-full w-full object-cover"
+                  className="w-full h-full object-cover"
                 />
               </div>
             )}
@@ -135,12 +103,12 @@ const PostDetail: React.FC = () => {
         </Section>
 
         <Section delay={0.2}>
-          <div className="card-surface mx-auto max-w-3xl rounded-[2rem] p-6 md:p-12">
+          <div className="max-w-2xl mx-auto border border-stone-200 dark:border-white/10 rounded-2xl p-5 md:p-12 shadow-sm">
             <MarkdownRenderer
               content={post.body}
             />
 
-            <div className="mt-16 border-t border-stone-100 pt-8 text-center font-serif italic text-stone-400 dark:border-stone-700">
+            <div className="mt-16 pt-8 border-t border-stone-100 dark:border-stone-700 text-center font-serif italic text-stone-400">
               ***
             </div>
           </div>

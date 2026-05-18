@@ -9,38 +9,38 @@ const MarkdownRenderer: React.FC<
   MarkdownRendererProps
 > = ({ content }) => {
   return (
-    <div className="editorial-prose max-w-none">
+    <div className="prose prose-stone dark:prose-invert max-w-none">
       <ReactMarkdown
         components={{
           img: ({ node, ...props }) => (
             <img
               {...props}
-              className="my-8 w-full rounded-[1.5rem] border border-stone-200/80 object-cover shadow-lg dark:border-stone-700/80"
+              className="rounded-lg shadow-md my-6 w-full object-cover max-h-[500px]"
               loading="lazy"
             />
           ),
           h1: ({ node, ...props }) => (
             <h1
               {...props}
-              className="mb-5 mt-10 text-4xl font-serif text-ink dark:text-stone-100"
+              className="text-3xl font-serif font-bold mt-8 mb-4 text-ink dark:text-stone-100"
             />
           ),
           h2: ({ node, ...props }) => (
             <h2
               {...props}
-              className="mb-4 mt-10 text-3xl font-serif text-ink dark:text-stone-100"
+              className="text-2xl font-serif font-bold mt-8 mb-4 text-ink dark:text-stone-100"
             />
           ),
           h3: ({ node, ...props }) => (
             <h3
               {...props}
-              className="mb-3 mt-8 text-2xl font-serif text-ink dark:text-stone-100"
+              className="text-xl font-serif font-bold mt-6 mb-3 text-ink dark:text-stone-100"
             />
           ),
           strong: ({ node, ...props }) => (
             <strong
               {...props}
-              className="rounded-sm bg-cinnabar/5 px-1 font-bold text-cinnabar dark:bg-cinnabar/10 dark:text-cinnabar-light"
+              className="font-bold text-cinnabar dark:text-cinnabar-light bg-cinnabar/5 dark:bg-cinnabar/10 px-1 rounded-sm"
             />
           ),
           code: ({ node, ...props }) => {
@@ -50,7 +50,7 @@ const MarkdownRenderer: React.FC<
               return (
                 <code
                   {...props}
-                  className="rounded-md border border-stone-200 bg-stone-100 px-1.5 py-0.5 font-mono text-[0.9em] text-cinnabar dark:border-stone-700 dark:bg-stone-800 dark:text-cinnabar-light"
+                  className="bg-stone-100 dark:bg-stone-800 text-cinnabar dark:text-cinnabar-light px-1.5 py-0.5 rounded font-mono text-[0.9em] border border-stone-200 dark:border-stone-700"
                 />
               );
             }
@@ -59,25 +59,25 @@ const MarkdownRenderer: React.FC<
           p: ({ node, ...props }) => (
             <p
               {...props}
-              className="mb-5 leading-8 text-stone-700 dark:text-stone-300"
+              className="mb-4 leading-relaxed text-stone-700 dark:text-stone-300"
             />
           ),
           ul: ({ node, ...props }) => (
             <ul
               {...props}
-              className="mb-5 list-disc space-y-2 pl-6 text-stone-700 dark:text-stone-300"
+              className="list-disc list-inside mb-4 space-y-1 text-stone-700 dark:text-stone-300"
             />
           ),
           ol: ({ node, ...props }) => (
             <ol
               {...props}
-              className="mb-5 list-decimal space-y-2 pl-6 text-stone-700 dark:text-stone-300"
+              className="list-decimal list-inside mb-4 space-y-1 text-stone-700 dark:text-stone-300"
             />
           ),
           blockquote: ({ node, ...props }) => (
             <blockquote
               {...props}
-              className="my-8 rounded-r-2xl border-l-4 border-jade bg-jade/5 px-5 py-4 italic text-stone-600 dark:bg-jade/10 dark:text-stone-400"
+              className="border-l-4 border-jade pl-4 italic my-4 text-stone-600 dark:text-stone-400"
             />
           ),
           a: ({ node, ...props }) => {
@@ -125,7 +125,7 @@ const MarkdownRenderer: React.FC<
             return (
               <a
                 {...props}
-                className="font-medium text-jade underline decoration-jade/30 underline-offset-4 hover:text-jade-light"
+                className="text-jade hover:underline transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >

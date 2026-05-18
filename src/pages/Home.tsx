@@ -27,42 +27,40 @@ const Home: React.FC = () => {
   return (
     <div className="pt-4">
       <Section>
-        <div className="card-surface rounded-[1.75rem] p-4 text-center mb-6">
+        <div
+          className="bg-white/50 dark:bg-white/5 rounded-lg p-3 text-center mb-6 border border-white/40 dark:border-white/10 backdrop-blur-sm"
+          style={{ transform: 'translateZ(0)' }}
+        >
           <motion.p
-            className="inline-flex items-center gap-3 text-stone-700 dark:text-stone-300"
+            className="text-stone-700 dark:text-stone-300 font-serif italic inline-block"
             initial={{
-              opacity: 0,
-              y: 8,
+              clipPath: 'inset(0 100% 0 0)',
             }}
             animate={{
-              opacity: 1,
-              y: 0,
+              clipPath: 'inset(0 -20% 0 0)',
             }}
             transition={{
-              duration: 0.8,
+              duration: 2.5,
               ease: 'easeOut',
             }}
           >
-            <span className="eyebrow">
-              {t('home.intro_eyebrow')}
-            </span>
             {t('home.greeting')}
           </motion.p>
         </div>
       </Section>
 
       <Section delay={0.1}>
-        <div className="card-surface-strong mb-8 flex flex-col items-center gap-8 rounded-[2rem] px-6 py-8 md:flex-row md:items-start md:px-8">
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-8">
           <div className="grow text-center md:text-left">
-            <h2 className="text-5xl font-brush font-bold text-ink dark:text-stone-100 md:text-6xl mb-3 tracking-wide">
+            <h2 className="text-4xl font-brush font-bold text-ink dark:text-stone-100 mb-3 tracking-wide">
               Quoc Anh
             </h2>
-            <p className="text-lg font-serif tracking-[0.08em] text-stone-600 dark:text-stone-400">
+            <p className="text-stone-600 dark:text-stone-400 text-lg font-serif tracking-wider">
               {t('home.role')}
             </p>
           </div>
           <div className="shrink-0">
-            <div className="group relative h-32 w-32 overflow-hidden rounded-full ring-4 ring-white/70 shadow-xl dark:ring-stone-800">
+            <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-stone-100 dark:ring-stone-800 shadow-xl relative group">
               <img
                 src="/img/av.jpg"
                 alt="Profile"
@@ -76,13 +74,14 @@ const Home: React.FC = () => {
         </div>
       </Section>
 
+      {/* Redesigned 3D Stage Area */}
       <Section delay={0.2}>
-        <div className="relative my-8 flex w-full flex-col items-center justify-center py-4">
+        <div className="relative w-full my-8 py-4 flex flex-col items-center justify-center">
           <div className="w-full relative z-10 h-[400px]">
             {shouldRender3D ? (
               <Suspense
                 fallback={
-                  <div className="loading-state h-full w-full relative">
+                  <div className="h-full w-full flex items-center justify-center relative">
                     <div
                       className="absolute w-[300px] h-[300px] rounded-full dark:opacity-20 opacity-50"
                       style={{
@@ -90,8 +89,8 @@ const Home: React.FC = () => {
                           'radial-gradient(circle, rgba(220,56,45,0.1) 0%, rgba(168,162,158,0.15) 100%)',
                       }}
                     />
-                    <div className="relative z-10 text-sm uppercase tracking-[0.18em] text-faint">
-                      {t('home.showcase_loading')}
+                    <div className="text-stone-400 animate-pulse relative z-10">
+                      Loading 3D...
                     </div>
                   </div>
                 }
@@ -99,7 +98,7 @@ const Home: React.FC = () => {
                 <ScholarRock />
               </Suspense>
             ) : (
-              <div className="loading-state h-full w-full relative">
+              <div className="h-full w-full flex items-center justify-center relative">
                 <div
                   className="absolute w-[300px] h-[300px] rounded-full dark:opacity-20 opacity-50"
                   style={{
@@ -107,8 +106,8 @@ const Home: React.FC = () => {
                       'radial-gradient(circle, rgba(220,56,45,0.1) 0%, rgba(168,162,158,0.15) 100%)',
                   }}
                 />
-                <div className="relative z-10 text-sm uppercase tracking-[0.18em] text-faint">
-                  {t('home.showcase_loading')}
+                <div className="text-stone-400 animate-pulse relative z-10">
+                  Loading 3D...
                 </div>
               </div>
             )}
@@ -117,10 +116,10 @@ const Home: React.FC = () => {
       </Section>
 
       <Section delay={0.3}>
-        <h3 className="section-title mb-6">
+        <h3 className="text-2xl font-serif font-bold underline decoration-2 decoration-cinnabar/30 dark:decoration-cinnabar-light/30 underline-offset-8 mb-6 text-ink dark:text-stone-100">
           {t('home.work_title')}
         </h3>
-        <div className="card-surface rounded-[1.75rem] p-6 md:p-8 text-lg text-justify">
+        <div className="text-stone-700 dark:text-stone-300 leading-relaxed text-lg mb-6 font-sans text-justify">
           <MarkdownRenderer
             content={t('home.work_desc')}
           />
@@ -128,7 +127,7 @@ const Home: React.FC = () => {
         <div className="flex justify-center my-10">
           <Link
             to="/works"
-            className="btn-primary group font-serif"
+            className="group flex items-center gap-2 bg-cinnabar hover:bg-cinnabar-light text-white px-6 py-3 rounded-full font-serif transition-all hover:shadow-xl hover:shadow-cinnabar/20 hover:-translate-y-0.5"
           >
             {t('home.portfolio_btn')}{' '}
             <ChevronRight
@@ -140,31 +139,31 @@ const Home: React.FC = () => {
       </Section>
 
       <Section delay={0.4}>
-        <h3 className="section-title mb-6">
+        <h3 className="text-2xl font-serif font-bold underline decoration-2 decoration-cinnabar/30 dark:decoration-cinnabar-light/30 underline-offset-8 mb-6 text-ink dark:text-stone-100">
           {t('home.bio_title')}
         </h3>
-        <div className="card-surface rounded-[1.75rem] p-4 md:p-6 space-y-3">
-          <div className="flex gap-3 rounded-2xl p-3 transition-colors hover:bg-white/50 dark:hover:bg-white/5">
-            <span className="min-w-12 pt-1 text-base font-serif font-bold text-ink dark:text-stone-200">
+        <div className="space-y-4">
+          <div className="flex gap-3 group hover:bg-white/50 dark:hover:bg-white/5 p-2 rounded-lg transition-colors -mx-2">
+            <span className="font-bold text-ink dark:text-stone-200 font-serif text-base pt-1 min-w-12">
               2004
             </span>
-            <span className="text-lg font-sans text-stone-700 dark:text-stone-300">
+            <span className="text-stone-700 dark:text-stone-300 text-lg font-sans">
               {t('home.born')}
             </span>
           </div>
-          <div className="flex gap-3 rounded-2xl p-3 transition-colors hover:bg-white/50 dark:hover:bg-white/5">
-            <span className="min-w-12 pt-1 text-base font-serif font-bold text-ink dark:text-stone-200">
+          <div className="flex gap-3 group hover:bg-white/50 dark:hover:bg-white/5 p-2 rounded-lg transition-colors -mx-2">
+            <span className="font-bold text-ink dark:text-stone-200 font-serif text-base pt-1 min-w-12">
               2022
             </span>
-            <span className="text-lg font-sans text-stone-700 dark:text-stone-300">
+            <span className="text-stone-700 dark:text-stone-300 text-lg font-sans">
               {t('home.master')}
             </span>
           </div>
-          <div className="flex gap-3 rounded-2xl p-3 transition-colors hover:bg-white/50 dark:hover:bg-white/5">
-            <span className="min-w-12 pt-1 text-base font-serif font-bold text-ink dark:text-stone-200">
+          <div className="flex gap-3 group hover:bg-white/50 dark:hover:bg-white/5 p-2 rounded-lg transition-colors -mx-2">
+            <span className="font-bold text-ink dark:text-stone-200 font-serif text-base pt-1 min-w-12">
               2025
             </span>
-            <span className="text-lg font-sans text-stone-700 dark:text-stone-300">
+            <span className="text-stone-700 dark:text-stone-300 text-lg font-sans">
               {t('home.freelance')}
             </span>
           </div>
@@ -172,10 +171,10 @@ const Home: React.FC = () => {
       </Section>
 
       <Section delay={0.5}>
-        <h3 className="section-title mb-6">
+        <h3 className="text-2xl font-serif font-bold underline decoration-2 decoration-cinnabar/30 dark:decoration-cinnabar-light/30 underline-offset-8 mb-6 text-ink dark:text-stone-100">
           {t('home.love_title')}
         </h3>
-        <div className="card-surface rounded-[1.75rem] p-6 md:p-8 text-lg">
+        <div className="text-stone-700 dark:text-stone-300 leading-loose text-lg font-sans">
           <MarkdownRenderer
             content={t('home.love_desc')}
           />
