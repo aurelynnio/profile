@@ -1,41 +1,38 @@
-import yaml from 'js-yaml';
+import {
+  hasSupabaseConfig,
+  supabase,
+} from '../lib/supabase';
 
 export interface MarkdownPost {
   slug: string;
   title: string;
   date: string;
   thumbnail?: string;
-  description?: string; // For Works
-  summary?: string; // For Writing
+  description?: string;
+  summary?: string;
   body: string;
   [key: string]: any;
 }
 
-const parseFrontmatter = (text: string) => {
-  const cleanText = text
-    .replace(/^\uFEFF/, '')
-    .trimStart();
-  const match = cleanText.match(
-    /^---\r?\n([\s\S]*?)\r?\n---/,
-  );
-  if (!match) {
-    return { data: {}, content: text };
-  }
+interface ContentRow {
+  slug: string;
+  title: string;
+  date: string;
+  thumbnail?: string | null;
+  description?: string | null;
+  summary?: string | null;
+  body: string;
+  metadata?: Record<string, any> | null;
+}
 
-  try {
-    const data = yaml.load(match[1]) as any;
-    const content = text.slice(match[0].length);
-    return { data, content };
-  } catch (e) {
-    console.error(
-      'Error parsing YAML frontmatter:',
-      e,
+const ensureSupabaseConfigured = () => {
+  if (!hasSupabaseConfig || !supabase) {
+    throw new Error(
+      'Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.',
     );
-    return { data: {}, content: text };
   }
 };
 
-// Memory cache for posts to avoid redundant fetching
 const contentCache: Record<
   string,
   MarkdownPost[]
@@ -43,78 +40,100 @@ const contentCache: Record<
 const postCache: Record<string, MarkdownPost> =
   {};
 
+const normalizeDbPost = (
+  row: ContentRow,
+): MarkdownPost => ({
+  slug: row.slug,
+  title: row.title || 'Untitled',
+  date: row.date
+    ? new Date(row.date).toISOString()
+    : new Date().toISOString(),
+  thumbnail: row.thumbnail || undefined,
+  description: row.description || undefined,
+  summary: row.summary || undefined,
+  body: row.body,
+  ...(row.metadata || {}),
+});
+
+const getContentFromSupabase = async (
+  type: 'works' | 'writing',
+): Promise<MarkdownPost[]> => {
+  ensureSupabaseConfigured();
+
+  const { data, error } = await supabase!
+    .from('contents')
+    .select(
+      'slug,title,date,thumbnail,description,summary,body,metadata',
+    )
+    .eq('type', type)
+    .order('date', { ascending: false });
+
+  if (error) {
+    console.error(
+      'Supabase getContent error:',
+      error,
+    );
+    throw error;
+  }
+
+  if (!data || data.length === 0) {
+    return [];
+  }
+
+  const posts = (data as ContentRow[]).map(
+    normalizeDbPost,
+  );
+
+  posts.forEach((post) => {
+    postCache[`${type}/${post.slug}`] = post;
+  });
+
+  return posts;
+};
+
+const getPostBySlugFromSupabase = async (
+  type: 'works' | 'writing',
+  slug: string,
+): Promise<MarkdownPost | null> => {
+  ensureSupabaseConfigured();
+
+  const { data, error } = await supabase!
+    .from('contents')
+    .select(
+      'slug,title,date,thumbnail,description,summary,body,metadata',
+    )
+    .eq('type', type)
+    .eq('slug', slug)
+    .maybeSingle();
+
+  if (error) {
+    console.error(
+      'Supabase getPostBySlug error:',
+      error,
+    );
+    throw error;
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  return normalizeDbPost(data as ContentRow);
+};
+
 export const getContent = async (
   type: 'works' | 'writing',
 ): Promise<MarkdownPost[]> => {
-  // Return cached content if available
   if (contentCache[type]) {
     return contentCache[type];
   }
 
-  let modules;
-  if (type === 'works') {
-    modules = import.meta.glob(
-      '../content/works/*.md',
-      {
-        query: '?raw',
-        import: 'default',
-      },
-    );
-  } else {
-    modules = import.meta.glob(
-      '../content/writing/*.md',
-      {
-        query: '?raw',
-        import: 'default',
-      },
-    );
-  }
-
-  // Load all modules in parallel
-  const postPromises = Object.entries(
-    modules as Record<
-      string,
-      () => Promise<string>
-    >,
-  ).map(async ([path, loader]) => {
-    const rawContent = await loader();
-    const { data, content } =
-      parseFrontmatter(rawContent);
-    const slug =
-      path.split('/').pop()?.replace('.md', '') ||
-      '';
-
-    const post: MarkdownPost = {
-      slug,
-      title: data.title || 'Untitled',
-      date: data.date
-        ? new Date(data.date).toISOString()
-        : new Date().toISOString(),
-      thumbnail: data.thumbnail,
-      description: data.description,
-      summary: data.summary,
-      body: content,
-      ...data,
-    };
-
-    // Also cache individual posts
-    postCache[`${type}/${slug}`] = post;
-    return post;
-  });
-
-  const posts = await Promise.all(postPromises);
-
-  // Sort by date descending
-  const sortedPosts = posts.sort(
-    (a, b) =>
-      new Date(b.date).getTime() -
-      new Date(a.date).getTime(),
+  const dbPosts = await getContentFromSupabase(
+    type,
   );
 
-  // Store in cache
-  contentCache[type] = sortedPosts;
-
-  return sortedPosts;
+  contentCache[type] = dbPosts;
+  return dbPosts;
 };
 
 export const getPostBySlug = async (
@@ -123,41 +142,19 @@ export const getPostBySlug = async (
 ): Promise<MarkdownPost | null> => {
   const cacheKey = `${type}/${slug}`;
 
-  // Check cache first
   if (postCache[cacheKey]) {
     return postCache[cacheKey];
   }
 
-  try {
-    const module = await import(
-      `../content/${type}/${slug}.md?raw`
-    );
-    const { data, content } = parseFrontmatter(
-      module.default,
-    );
+  const dbPost = await getPostBySlugFromSupabase(
+    type,
+    slug,
+  );
 
-    const post: MarkdownPost = {
-      slug,
-      title: data.title || 'Untitled',
-      date: data.date
-        ? new Date(data.date).toISOString()
-        : new Date().toISOString(),
-      thumbnail: data.thumbnail,
-      description: data.description,
-      summary: data.summary,
-      body: content,
-      ...data,
-    };
-
-    // Store in cache
-    postCache[cacheKey] = post;
-
-    return post;
-  } catch (error) {
-    console.error(
-      `Error loading post ${slug}:`,
-      error,
-    );
+  if (!dbPost) {
     return null;
   }
+
+  postCache[cacheKey] = dbPost;
+  return dbPost;
 };
