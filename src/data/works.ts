@@ -53,7 +53,7 @@ Built with React on the frontend and Node.js, Express, and MongoDB on the backen
       'Railway ticket search and booking experience built for real route and seat inventory',
     body: `## Overview
 
-VietRailway is a rail ticket booking product focused on helping passengers search routes, compare available cabins and seat classes, and move into booking with less friction. The interface was designed around real trip data instead of generic booking cards, so the main screens surface departure time, route, available seats, and lowest fare immediately.
+VietRailway is a full-stack rail ticket booking product that combines a passenger-facing booking interface with a Spring-based microservices backend. The product is built around real route, coach, seat, and fare inventory so users can search trips, compare cabins, and continue to payment with less friction.
 
 ## Website Experience
 
@@ -63,9 +63,19 @@ VietRailway is a rail ticket booking product focused on helping passengers searc
 - **Booking-Ready Results**: route cards expose train number, duration, remaining seats, coach configurations, and fare ranges before users continue to booking
 - **Full Journey Support**: the codebase also includes login, profile, booking, payment result, and admin pages for managing the end-to-end ticket flow
 
+## Backend Architecture
+
+- **Microservices Platform**: Spring Boot 4 and Spring Cloud split the system into api-gateway, user-service, ticket-service, search-service, order-service, and payment-service
+- **Service Infrastructure**: Eureka discovery and Spring Cloud Config provide service registration and centralized configuration
+- **Data Layer**: MySQL stores user, order, and payment domains, while MongoDB handles ticket and search data; Redis supports ticket-side caching and fast access patterns
+- **Payment Flow**: VNPay integration is wired through the payment service with callback and result-page handling
+- **Deployment Topology**: Docker Compose orchestrates the gateway, services, MySQL, MongoDB, and Redis for local integration runs
+
 ## Tech Stack
 
-Built with React, TypeScript, React Router, TanStack Query, Zustand, and a custom UI layer on top of Tailwind-based styling. The app is structured by features and entities, with separate flows for home, search, booking, profile, admin, and payments.
+Frontend: React, TypeScript, React Router, TanStack Query, Zustand, TailwindCSS.
+
+Backend: Java 21, Spring Boot 4, Spring Cloud, Spring WebFlux, Spring Data JPA, MySQL, MongoDB, Redis, Docker Compose, VNPay.
 
 ## Screenshots
 
@@ -78,9 +88,9 @@ Built with React, TypeScript, React Router, TanStack Query, Zustand, and a custo
     link: '',
     platform: 'Web / Booking',
     stack:
-      'React, TypeScript, React Router, TanStack Query, Zustand, TailwindCSS',
+      'React, TypeScript, Java 21, Spring Boot, Spring Cloud, MySQL, MongoDB, Redis, Docker, VNPay',
     'Current Status': 'Active Development',
-    Role: 'Frontend Developer',
+    Role: 'Full-stack Developer',
     yearBadge: '2026-',
   },
   {
