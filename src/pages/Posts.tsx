@@ -10,6 +10,11 @@ import {
   MarkdownPost,
 } from '../utils/markdown';
 import { format } from 'date-fns';
+import PageIntro from '../components/PageIntro';
+import {
+  EmptyState,
+  LoadingState,
+} from '../components/ContentState';
 
 const PostItem: React.FC<{
   post: MarkdownPost;
@@ -38,35 +43,62 @@ const PostItem: React.FC<{
 const Posts: React.FC = () => {
   const { t } = useLanguage();
   const [posts, setPosts] = useState<
-    MarkdownPost[]
-  >([]);
+    MarkdownPost[] | null
+  >(null);
+  const [loadError, setLoadError] =
+    useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const data = await getContent('writing');
-      setPosts(data);
+      try {
+        const data = await getContent('writing');
+        setPosts(data);
+      } catch {
+        setLoadError(true);
+        setPosts([]);
+      }
     };
     fetchPosts();
   }, []);
 
   return (
-    <div className="pt-4">
+    <div>
       <Section>
-        <h3 className="text-3xl font-serif font-bold mb-10 text-ink dark:text-stone-100">
-          {t('posts.title')}
-        </h3>
+        <PageIntro
+          title={t('posts.title')}
+          kicker={t('posts.kicker')}
+          description={t('posts.description')}
+        />
       </Section>
 
-      <div className="max-w-2xl">
-        {posts.map((post, index) => (
-          <Section
-            key={post.slug}
-            delay={index * 0.1}
-          >
-            <PostItem post={post} />
-          </Section>
-        ))}
-      </div>
+      {loadError ? (
+        <EmptyState
+          title={t('content.unavailable_title')}
+          description={t(
+            'content.unavailable_desc',
+          )}
+        />
+      ) : posts === null ? (
+        <LoadingState
+          label={t('posts.loading')}
+        />
+      ) : posts.length === 0 ? (
+        <EmptyState
+          title={t('posts.empty_title')}
+          description={t('posts.empty_desc')}
+        />
+      ) : (
+        <div className="max-w-3xl">
+          {posts.map((post, index) => (
+            <Section
+              key={post.slug}
+              delay={index * 0.1}
+            >
+              <PostItem post={post} />
+            </Section>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

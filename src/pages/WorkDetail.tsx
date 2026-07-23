@@ -4,13 +4,9 @@ import React, {
 } from 'react';
 import {
   useParams,
-  useNavigate,
   Link,
 } from 'react-router-dom';
-import {
-  ArrowLeft,
-  ExternalLink,
-} from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import Section from '../components/Section';
 import { useLanguage } from '../context/LanguageContext';
 import {
@@ -18,23 +14,33 @@ import {
   MarkdownPost,
 } from '../utils/markdown';
 import MarkdownRenderer from '../components/MarkdownRenderer';
+import {
+  EmptyState,
+  LoadingState,
+} from '../components/ContentState';
+import ProjectMetadata from '../components/ProjectMetadata';
 
 const WorkDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useLanguage();
-  const navigate = useNavigate();
   const [project, setProject] =
     useState<MarkdownPost | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] =
+    useState(false);
 
   useEffect(() => {
     const fetchProject = async () => {
-      if (id) {
-        const data = await getPostBySlug(
-          'works',
-          id,
-        );
-        setProject(data);
+      try {
+        if (id) {
+          const data = await getPostBySlug(
+            'works',
+            id,
+          );
+          setProject(data);
+        }
+      } catch {
+        setLoadError(true);
       }
       setLoading(false);
     };
@@ -44,22 +50,37 @@ const WorkDetail: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="pt-20 text-center">
-        Loading...
-      </div>
+      <LoadingState
+        label={t('project.loading')}
+      />
     );
   }
 
   if (!project) {
     return (
-      <div className="pt-20 text-center">
-        Project not found
-      </div>
+      <EmptyState
+        title={
+          loadError
+            ? t('content.unavailable_title')
+            : t('project.missing_title')
+        }
+        description={
+          loadError
+            ? t('content.unavailable_desc')
+            : t('project.missing_desc')
+        }
+        action={{
+          label: loadError
+            ? t('back')
+            : t('project.browse'),
+          to: '/works',
+        }}
+      />
     );
   }
 
   return (
-    <div className="pt-4 pb-20">
+    <div className="pb-20">
       <Section>
         <div className="flex items-center gap-1.5 mb-8 text-sm font-medium">
           <Link
@@ -71,7 +92,7 @@ const WorkDetail: React.FC = () => {
           <span className="text-stone-400 opacity-50 px-1">
             &gt;
           </span>
-          <h1 className="text-xl font-bold text-ink dark:text-stone-100">
+          <h1 className="text-xl font-bold text-ink dark:text-stone-100 truncate">
             {project.title}
           </h1>
           <span className="bg-stone-200/50 dark:bg-stone-800 text-stone-600 dark:text-stone-400 px-1.5 py-0.5 rounded text-[10px] font-mono ml-1">
@@ -87,96 +108,7 @@ const WorkDetail: React.FC = () => {
             {project.description}
           </p>
 
-          <div className="space-y-3">
-            {project.link && (
-              <div className="flex items-center gap-4">
-                <span className="bg-[#E4F2E1] dark:bg-[#2D5A27]/30 text-[#2D5A27] dark:text-[#E4F2E1] px-1.5 py-0.5 rounded-[3px] text-[10px] font-bold uppercase tracking-wider shrink-0 w-20 text-center">
-                  WEBSITE
-                </span>
-                <a
-                  href={project.link}
-                  className="text-jade hover:underline text-sm flex items-center gap-1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {project.link}{' '}
-                  <ExternalLink size={12} />
-                </a>
-              </div>
-            )}
-            {project['Current Status'] && (
-              <div className="flex items-center gap-4">
-                <span className="bg-[#E4F2E1] dark:bg-[#2D5A27]/30 text-[#2D5A27] dark:text-[#E4F2E1] px-1.5 py-0.5 rounded-[3px] text-[10px] font-bold uppercase tracking-wider shrink-0 w-20 text-center">
-                  STATUS
-                </span>
-                <span className="text-stone-700 dark:text-stone-300 text-sm">
-                  {project['Current Status']}
-                </span>
-              </div>
-            )}
-            {project['Role'] && (
-              <div className="flex items-center gap-4">
-                <span className="bg-[#E4F2E1] dark:bg-[#2D5A27]/30 text-[#2D5A27] dark:text-[#E4F2E1] px-1.5 py-0.5 rounded-[3px] text-[10px] font-bold uppercase tracking-wider shrink-0 w-20 text-center">
-                  ROLE
-                </span>
-                <span className="text-stone-700 dark:text-stone-300 text-sm">
-                  {project['Role']}
-                </span>
-              </div>
-            )}
-            {project.platform && (
-              <div className="flex items-center gap-4">
-                <span className="bg-[#E4F2E1] dark:bg-[#2D5A27]/30 text-[#2D5A27] dark:text-[#E4F2E1] px-1.5 py-0.5 rounded-[3px] text-[10px] font-bold uppercase tracking-wider shrink-0 w-20 text-center">
-                  PLATFORM
-                </span>
-                <span className="text-stone-700 dark:text-stone-300 text-sm">
-                  {project.platform}
-                </span>
-              </div>
-            )}
-            {project.stack && (
-              <div className="flex items-center gap-4">
-                <span className="bg-[#E4F2E1] dark:bg-[#2D5A27]/30 text-[#2D5A27] dark:text-[#E4F2E1] px-1.5 py-0.5 rounded-[3px] text-[10px] font-bold uppercase tracking-wider shrink-0 w-20 text-center">
-                  STACK
-                </span>
-                <span className="text-stone-700 dark:text-stone-300 text-sm">
-                  {project.stack}
-                </span>
-              </div>
-            )}
-            {project.source && (
-              <div className="flex items-center gap-4">
-                <span className="bg-[#E4F2E1] dark:bg-[#2D5A27]/30 text-[#2D5A27] dark:text-[#E4F2E1] px-1.5 py-0.5 rounded-[3px] text-[10px] font-bold uppercase tracking-wider shrink-0 w-20 text-center">
-                  SOURCE
-                </span>
-                <a
-                  href={project.source}
-                  className="text-jade hover:underline text-sm flex items-center gap-1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Source Code{' '}
-                  <ExternalLink size={12} />
-                </a>
-              </div>
-            )}
-            {project.blogpost && (
-              <div className="flex items-center gap-4">
-                <span className="bg-[#E4F2E1] dark:bg-[#2D5A27]/30 text-[#2D5A27] dark:text-[#E4F2E1] px-1.5 py-0.5 rounded-[3px] text-[10px] font-bold uppercase tracking-wider shrink-0 w-20 text-center">
-                  BLOGPOST
-                </span>
-                <a
-                  href={project.blogpost}
-                  className="text-jade hover:underline text-sm flex items-center gap-1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Related Article{' '}
-                  <ExternalLink size={12} />
-                </a>
-              </div>
-            )}
-          </div>
+          <ProjectMetadata project={project} />
         </div>
       </Section>
 
@@ -202,7 +134,7 @@ const WorkDetail: React.FC = () => {
           <div className="mt-12 pt-8 border-t border-stone-200 dark:border-stone-800 flex justify-center">
             <a
               href={project.link}
-              className="flex items-center gap-2 bg-ink dark:bg-stone-700 text-white px-6 py-3 rounded-full font-medium hover:bg-jade dark:hover:bg-jade transition-colors"
+              className="button-primary bg-ink hover:bg-jade dark:bg-stone-700"
               target="_blank"
               rel="noopener noreferrer"
             >

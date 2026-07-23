@@ -29,8 +29,11 @@ const NotFound = lazy(
 
 // Loading component
 const PageLoader = () => (
-  <div className="flex items-center justify-center min-h-[50vh]">
-    <div className="w-8 h-8 border-4 border-stone-200 border-t-cinnabar rounded-full animate-spin"></div>
+  <div
+    className="flex min-h-[50vh] items-center justify-center"
+    aria-label="Loading page"
+  >
+    <div className="h-8 w-8 animate-spin rounded-full border-4 border-stone-200 border-t-cinnabar dark:border-stone-700"></div>
   </div>
 );
 
@@ -39,7 +42,7 @@ const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
-    <div className="mx-auto px-4 sm:px-6 lg:px-8 pt-24 max-w-3xl">
+    <div className="page-shell">
       <AnimatePresence mode="wait" initial={true}>
         <Suspense fallback={<PageLoader />}>
           <Routes

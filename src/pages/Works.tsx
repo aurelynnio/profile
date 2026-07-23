@@ -5,6 +5,11 @@ import React, {
 import Section from '../components/Section';
 import { useLanguage } from '../context/LanguageContext';
 import { Link } from 'react-router-dom';
+import PageIntro from '../components/PageIntro';
+import {
+  EmptyState,
+  LoadingState,
+} from '../components/ContentState';
 import {
   getContent,
   MarkdownPost,
@@ -46,38 +51,65 @@ const ProjectCard: React.FC<{
 const Works: React.FC = () => {
   const { t } = useLanguage();
   const [projects, setProjects] = useState<
-    MarkdownPost[]
-  >([]);
+    MarkdownPost[] | null
+  >(null);
+  const [loadError, setLoadError] =
+    useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const data = await getContent('works');
-      setProjects(data);
+      try {
+        const data = await getContent('works');
+        setProjects(data);
+      } catch {
+        setLoadError(true);
+        setProjects([]);
+      }
     };
     fetchProjects();
   }, []);
 
   return (
-    <div className="pt-4">
+    <div>
       <Section>
-        <h3 className="text-3xl font-serif font-bold mb-8 text-ink dark:text-stone-100">
-          {t('works.title')}
-        </h3>
+        <PageIntro
+          title={t('works.title')}
+          kicker={t('works.kicker')}
+          description={t('works.description')}
+        />
       </Section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-        {projects.map((project, index) => (
-          <Section
-            key={project.slug}
-            delay={index * 0.1}
-          >
-            <ProjectCard
-              project={project}
-              buttonText={t('works.read_more')}
-            />
-          </Section>
-        ))}
-      </div>
+      {loadError ? (
+        <EmptyState
+          title={t('content.unavailable_title')}
+          description={t(
+            'content.unavailable_desc',
+          )}
+        />
+      ) : projects === null ? (
+        <LoadingState
+          label={t('works.loading')}
+        />
+      ) : projects.length === 0 ? (
+        <EmptyState
+          title={t('works.empty_title')}
+          description={t('works.empty_desc')}
+        />
+      ) : (
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          {projects.map((project, index) => (
+            <Section
+              key={project.slug}
+              delay={index * 0.1}
+            >
+              <ProjectCard
+                project={project}
+                buttonText={t('works.read_more')}
+              />
+            </Section>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

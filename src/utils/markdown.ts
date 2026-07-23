@@ -1,6 +1,3 @@
-import { worksData } from '../data/works';
-import { writingData } from '../data/writing';
-
 export interface MarkdownPost {
   slug: string;
   title: string;
@@ -12,24 +9,30 @@ export interface MarkdownPost {
   [key: string]: any;
 }
 
-const dataMap: Record<string, MarkdownPost[]> = {
-  works: worksData,
-  writing: writingData,
+const apiBaseUrl = (import.meta.env.VITE_API_URL || 'http://localhost:4000/api').replace(/\/$/, '');
+
+const fetchContent = async <T>(path: string): Promise<T> => {
+  const response = await fetch(`${apiBaseUrl}${path}`);
+  if (!response.ok) {
+    throw new Error(`Content API request failed (${response.status}).`);
+  }
+  return response.json() as Promise<T>;
 };
 
 export const getContent = async (
   type: 'works' | 'writing',
 ): Promise<MarkdownPost[]> => {
-  return dataMap[type] || [];
+  return fetchContent<MarkdownPost[]>(`/content/${type}`);
 };
 
 export const getPostBySlug = async (
   type: 'works' | 'writing',
   slug: string,
 ): Promise<MarkdownPost | null> => {
-  const items = dataMap[type] || [];
-  return (
-    items.find((item) => item.slug === slug) ||
-    null
-  );
+  try {
+    return await fetchContent<MarkdownPost>(`/content/${type}/${encodeURIComponent(slug)}`);
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('(404)')) return null;
+    throw error;
+  }
 };

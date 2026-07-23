@@ -39,9 +39,37 @@ const translations = {
     'home.love_desc':
       'Music, [Drawing](#green), Calligraphy, [Photography](#green).',
     'works.title': 'Works',
+    'works.kicker': 'Selected projects',
+    'works.description':
+      'A selection of products and systems I have designed and built.',
     'works.read_more': 'View Details',
+    'works.loading': 'Loading projects…',
+    'works.empty_title': 'No projects yet',
+    'works.empty_desc':
+      'New work will appear here soon.',
     'posts.title': 'Writing',
+    'posts.kicker': 'Notes and essays',
+    'posts.description':
+      'Thoughts on building software, learning, and the craft behind the work.',
     'posts.read_more': 'Read Article',
+    'posts.loading': 'Loading writing…',
+    'posts.empty_title':
+      'No writing published yet',
+    'posts.empty_desc': 'Please check back soon.',
+    'project.loading': 'Loading project…',
+    'project.missing_title': 'Project not found',
+    'project.missing_desc':
+      'This project may have moved or is no longer available.',
+    'project.browse': 'Browse projects',
+    'article.loading': 'Loading article…',
+    'article.missing_title': 'Article not found',
+    'article.missing_desc':
+      'This article may have moved or is no longer available.',
+    'article.browse': 'Browse writing',
+    'content.unavailable_title':
+      'Content is temporarily unavailable',
+    'content.unavailable_desc':
+      'Please make sure the content API is running, then try again.',
     'footer.text':
       '© 2025 Guo Ying. Made with morning silence.',
     back: 'Back',
@@ -71,9 +99,35 @@ const translations = {
     'home.love_title': '爱好',
     'home.love_desc': '艺术，音乐，绘画，书法。',
     'works.title': '精选作品',
+    'works.kicker': '精选项目',
+    'works.description':
+      '我设计和开发的产品与系统选集。',
     'works.read_more': '查看详情',
+    'works.loading': '正在加载项目…',
+    'works.empty_title': '暂时没有项目',
+    'works.empty_desc':
+      '新的作品很快会出现在这里。',
     'posts.title': '随笔',
+    'posts.kicker': '笔记与随笔',
+    'posts.description':
+      '关于软件构建、学习与创作过程中的思考。',
     'posts.read_more': '阅读全文',
+    'posts.loading': '正在加载文章…',
+    'posts.empty_title': '暂时没有文章',
+    'posts.empty_desc': '请稍后再来查看。',
+    'project.loading': '正在加载项目…',
+    'project.missing_title': '未找到项目',
+    'project.missing_desc':
+      '该项目可能已迁移或不再提供。',
+    'project.browse': '浏览项目',
+    'article.loading': '正在加载文章…',
+    'article.missing_title': '未找到文章',
+    'article.missing_desc':
+      '该文章可能已迁移或不再提供。',
+    'article.browse': '浏览随笔',
+    'content.unavailable_title': '内容暂时不可用',
+    'content.unavailable_desc':
+      '请确认内容 API 正在运行后再试。',
     'footer.text':
       '© 2025 Guo Ying. 于清晨静谧中制作。',
     back: '返回',

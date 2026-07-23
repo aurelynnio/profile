@@ -21,7 +21,7 @@ const NotFound: React.FC = () => {
           </p>
           <Link
             to="/"
-            className="inline-block bg-jade hover:bg-jade-light text-white px-6 py-2 rounded-full transition-colors text-sm shadow-sm hover:shadow-md"
+            className="button-primary bg-jade hover:bg-jade"
           >
             {t('not_found.home_btn')}
           </Link>

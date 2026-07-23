@@ -62,7 +62,7 @@ const Home: React.FC = () => {
           <div className="shrink-0">
             <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-stone-100 dark:ring-stone-800 shadow-xl relative group">
               <img
-                src="/img/av.jpg"
+                src="/img/av.png"
                 alt="Profile"
                 width="128"
                 height="128"
@@ -127,7 +127,7 @@ const Home: React.FC = () => {
         <div className="flex justify-center my-10">
           <Link
             to="/works"
-            className="group flex items-center gap-2 bg-cinnabar hover:bg-cinnabar-light text-white px-6 py-3 rounded-full font-serif transition-all hover:shadow-xl hover:shadow-cinnabar/20 hover:-translate-y-0.5"
+            className="button-primary group"
           >
             {t('home.portfolio_btn')}{' '}
             <ChevronRight

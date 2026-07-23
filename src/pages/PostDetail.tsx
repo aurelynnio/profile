@@ -2,13 +2,9 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import {
-  useParams,
-  useNavigate,
-} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   ArrowLeft,
-  Clock,
   Calendar,
 } from 'lucide-react';
 import Section from '../components/Section';
@@ -19,23 +15,33 @@ import {
 } from '../utils/markdown';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
+import {
+  EmptyState,
+  LoadingState,
+} from '../components/ContentState';
 
 const PostDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useLanguage();
-  const navigate = useNavigate();
   const [post, setPost] =
     useState<MarkdownPost | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] =
+    useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
-      if (id) {
-        const data = await getPostBySlug(
-          'writing',
-          id,
-        );
-        setPost(data);
+      try {
+        if (id) {
+          const data = await getPostBySlug(
+            'writing',
+            id,
+          );
+          setPost(data);
+        }
+      } catch {
+        setLoadError(true);
       }
       setLoading(false);
     };
@@ -45,33 +51,48 @@ const PostDetail: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="pt-20 text-center">
-        Loading...
-      </div>
+      <LoadingState
+        label={t('article.loading')}
+      />
     );
   }
 
   if (!post) {
     return (
-      <div className="pt-20 text-center">
-        Post not found
-      </div>
+      <EmptyState
+        title={
+          loadError
+            ? t('content.unavailable_title')
+            : t('article.missing_title')
+        }
+        description={
+          loadError
+            ? t('content.unavailable_desc')
+            : t('article.missing_desc')
+        }
+        action={{
+          label: loadError
+            ? t('back')
+            : t('article.browse'),
+          to: '/posts',
+        }}
+      />
     );
   }
 
   return (
-    <div className="pt-4 pb-20">
+    <div className="pb-20">
       <Section>
-        <button
-          onClick={() => navigate('/posts')}
-          className="group flex items-center gap-2 text-stone-500 hover:text-jade transition-colors mb-8 text-sm font-medium"
+        <Link
+          to="/posts"
+          className="button-secondary group mb-8"
         >
           <ArrowLeft
             size={16}
             className="group-hover:-translate-x-1 transition-transform"
           />
           {t('back')}
-        </button>
+        </Link>
       </Section>
 
       <article>
@@ -103,7 +124,7 @@ const PostDetail: React.FC = () => {
         </Section>
 
         <Section delay={0.2}>
-          <div className="max-w-2xl mx-auto border border-stone-200 dark:border-white/10 rounded-2xl p-5 md:p-12 shadow-sm">
+          <div className="surface-card mx-auto max-w-2xl p-5 md:p-12">
             <MarkdownRenderer
               content={post.body}
             />
