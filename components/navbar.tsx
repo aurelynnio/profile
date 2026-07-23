@@ -11,11 +11,13 @@ const navItems = [
   { path: '/', labelKey: 'nav.about' },
   { path: '/works', labelKey: 'nav.works' },
   { path: '/posts', labelKey: 'nav.posts' },
-];
+] as const;
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { t, language, toggleLanguage } = useUiStore();
+  const t = useUiStore((s) => s.t);
+  const language = useUiStore((s) => s.language);
+  const toggleLanguage = useUiStore((s) => s.toggleLanguage);
 
   const isPathActive = (path: string) =>
     path === '/' ? pathname === '/' : pathname.startsWith(path);

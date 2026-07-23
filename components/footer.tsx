@@ -4,7 +4,7 @@ import { Github, Mail, Linkedin } from 'lucide-react';
 import { useUiStore } from '@/stores/ui-store';
 
 export default function Footer() {
-  const { t } = useUiStore();
+  const t = useUiStore((s) => s.t);
   return (
     <footer className="mt-32 pb-10 text-center text-stone-400 dark:text-stone-600 text-sm">
       <div className="flex justify-center space-x-8 mb-6">

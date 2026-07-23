@@ -1,77 +1,60 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { en, type TranslationKey } from '@/messages/en';
+import { zh } from '@/messages/zh';
 
-const en: Record<string, string> = {
-  'nav.about': 'Home',
-  'nav.works': 'Works',
-  'nav.posts': 'Writing',
-  'nav.resume': 'Resume',
-  'home.greeting': 'Today\u2019s technology, tomorrow\u2019s intelligence.',
-  'home.role': 'Digital Craftsman ( Software Developer / Student )',
-  'home.work_title': 'Work',
-  'home.work_desc': 'Hello everyone, my name is [Anh](#green). I am [21 years old](#purple) and currently pursuing my passion in [Software Development](#green). My goal is to become a [Software Engineer](#green) dedicated to [solving client needs](#yellow) and delivering [reliable technical solutions](#yellow) through code. I created this blog to share the [knowledge and experiences](#purple) I have gained over the years. Thank you for visiting my website\u2014I sincerely appreciate your [support](#underline).',
-  'home.portfolio_btn': 'My Portfolio',
-  'home.bio_title': 'Bio',
-  'home.born': 'Born in HoChiMinh City (\u80e1\u5fd7\u660e\u5e02), Vietnam.',
-  'home.master': 'Started my journey in Information Technology.',
-  'home.freelance': 'Started working as a Freelance Developer.',
-  'home.love_title': 'I \u2665',
-  'home.love_desc': 'Music, [Drawing](#green), Calligraphy, [Photography](#green).',
-  'works.title': 'Works',
-  'works.kicker': 'Selected projects',
-  'works.description': 'A selection of products and systems I have designed and built.',
-  'works.read_more': 'View Details',
-  'works.loading': 'Loading projects\u2026',
-  'works.empty_title': 'No projects yet',
-  'works.empty_desc': 'New work will appear here soon.',
-  'posts.title': 'Writing',
-  'posts.kicker': 'Notes and essays',
-  'posts.description': 'Thoughts on building software, learning, and the craft behind the work.',
-  'posts.read_more': 'Read Article',
-  'posts.loading': 'Loading writing\u2026',
-  'posts.empty_title': 'No writing published yet',
-  'posts.empty_desc': 'Please check back soon.',
-  'project.loading': 'Loading project\u2026',
-  'project.missing_title': 'Project not found',
-  'project.missing_desc': 'This project may have moved or is no longer available.',
-  'project.browse': 'Browse projects',
-  'article.loading': 'Loading article\u2026',
-  'article.missing_title': 'Article not found',
-  'article.missing_desc': 'This article may have moved or is no longer available.',
-  'article.browse': 'Browse writing',
-  'content.unavailable_title': 'Content is temporarily unavailable',
-  'content.unavailable_desc': 'Please make sure the content API is running, then try again.',
-  'footer.text': '\u00a9 2025 Guo Ying. Made with morning silence.',
-  'back': 'Back',
-  'not_found.title': 'Lost in the Mist',
-  'not_found.desc': 'The page you are looking for has drifted away.',
-  'not_found.home_btn': 'Return Home',
+type Language = 'en' | 'zh';
+type Theme = 'light' | 'dark';
+
+interface UiState {
+  language: Language;
+  theme: Theme;
+  setLanguage: (language: Language) => void;
+  toggleLanguage: () => void;
+  setTheme: (theme: Theme) => void;
+  toggleTheme: () => void;
+  t: (key: TranslationKey) => string;
+}
+
+const dictionaries = { en, zh };
+
+const applyThemeClass = (theme: Theme) => {
+  if (typeof document === 'undefined') return;
+  document.documentElement.classList.toggle('dark', theme === 'dark');
 };
 
-export const useUiStore = () => {
-  const [language, setLanguage] = useState<'en' | 'zh'>('en');
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-  const toggleLanguage = useCallback(() => {
-    setLanguage((prev) => (prev === 'en' ? 'zh' : 'en'));
-  }, []);
-
-  const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next = prev === 'light' ? 'dark' : 'light';
-      if (typeof document !== 'undefined') {
-        document.documentElement.classList.toggle('dark', next === 'dark');
-        localStorage.setItem('theme', next);
-      }
-      return next;
-    });
-  }, []);
-
-  const t = useCallback(
-    (key: string): string => en[key] || key,
-    [],
-  );
-
-  return { language, theme, toggleLanguage, toggleTheme, t };
-};
+export const useUiStore = create<UiState>()(
+  persist(
+    (set, get) => ({
+      language: 'en',
+      theme: 'light',
+      setLanguage: (language) => set({ language }),
+      toggleLanguage: () =>
+        set((state) => ({ language: state.language === 'en' ? 'zh' : 'en' })),
+      setTheme: (theme) => {
+        applyThemeClass(theme);
+        set({ theme });
+      },
+      toggleTheme: () =>
+        set((state) => {
+          const next = state.theme === 'light' ? 'dark' : 'light';
+          applyThemeClass(next);
+          return { theme: next };
+        }),
+      t: (key) => {
+        const { language } = get();
+        return dictionaries[language][key] || en[key] || key;
+      },
+    }),
+    {
+      name: 'profile-ui',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ language: state.language, theme: state.theme }),
+      onRehydrateStorage: () => (state) => {
+        if (state) applyThemeClass(state.theme);
+      },
+    },
+  ),
+);
