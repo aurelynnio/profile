@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { Client } from 'pg';
-import { config } from '../src/config.js';
+import { env } from '../src/lib/env.js';
 
 const currentDirectory = path.dirname(
   fileURLToPath(import.meta.url),
@@ -16,7 +16,7 @@ const migrationPath = path.join(
 );
 const sql = await readFile(migrationPath, 'utf8');
 const client = new Client({
-  connectionString: config.databaseUrl,
+  connectionString: env.databaseUrl,
   ssl: { rejectUnauthorized: false },
 });
 
