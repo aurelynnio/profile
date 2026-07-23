@@ -1,3 +1,5 @@
+'use client';
+
 import React, {
   useRef,
   Suspense,
@@ -15,17 +17,6 @@ import {
 } from '@react-three/drei';
 import { Group } from 'three';
 import { useInView } from 'framer-motion';
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      ambientLight: any;
-      directionalLight: any;
-      spotLight: any;
-      primitive: any;
-    }
-  }
-}
 
 const Loader = () => {
   return (
@@ -59,7 +50,7 @@ const CustomModel: React.FC<{ url: string }> = ({
       ref={meshRef}
       object={clonedScene}
       scale={0.4}
-      position={[0, 0, 0]} // Reset to true center
+      position={[0, 0, 0]}
       rotation={[0, -Math.PI / 4, 0]}
     />
   );
@@ -146,7 +137,6 @@ const ScholarRock: React.FC = () => {
         />
       </Canvas>
 
-      {/* Visual Overlay - changed to hint that it's a showcase, not interactive */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 font-medium">
           Automated Showcase

@@ -1,6 +1,8 @@
+'use client';
+
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
-import { MarkdownPost } from '../utils/markdown';
+import type { ContentCard } from '@/shared/content';
 
 interface MetadataRow {
   label: string;
@@ -9,7 +11,7 @@ interface MetadataRow {
 }
 
 const ProjectMetadata: React.FC<{
-  project: MarkdownPost;
+  project: ContentCard;
 }> = ({ project }) => {
   const rows: MetadataRow[] = [
     {
@@ -19,9 +21,9 @@ const ProjectMetadata: React.FC<{
     },
     {
       label: 'Status',
-      value: project['Current Status'],
+      value: project.status,
     },
-    { label: 'Role', value: project.Role },
+    { label: 'Role', value: project.role },
     {
       label: 'Platform',
       value: project.platform,

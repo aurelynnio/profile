@@ -1,11 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Section from '../components/Section';
-import { useLanguage } from '../context/LanguageContext';
+'use client';
 
-const NotFound: React.FC = () => {
-  const { t } = useLanguage();
+import Link from 'next/link';
+import Section from '@/components/section';
+import { useUiStore } from '@/stores/ui-store';
 
+export default function NotFound() {
+  const t = useUiStore((s) => s.t);
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center pt-20">
       <Section>
@@ -19,16 +19,11 @@ const NotFound: React.FC = () => {
           <p className="text-stone-600 dark:text-stone-400 mb-8 font-light">
             {t('not_found.desc')}
           </p>
-          <Link
-            to="/"
-            className="button-primary bg-jade hover:bg-jade"
-          >
+          <Link href="/" className="button-primary bg-jade hover:bg-jade">
             {t('not_found.home_btn')}
           </Link>
         </div>
       </Section>
     </div>
   );
-};
-
-export default NotFound;
+}

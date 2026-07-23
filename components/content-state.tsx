@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 interface ContentStateProps {
   title: string;
@@ -36,7 +38,7 @@ export const EmptyState: React.FC<
     {action && (
       <Link
         className="button-primary mt-6"
-        to={action.to}
+        href={action.to}
       >
         {action.label}
       </Link>
