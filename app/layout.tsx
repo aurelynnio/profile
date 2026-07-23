@@ -13,6 +13,7 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://example.com'),
   title: {
     default: 'GuoYing | Digital Craftsman',
     template: '%s | GuoYing',

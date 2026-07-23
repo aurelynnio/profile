@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
@@ -49,8 +50,14 @@ export default function PostDetailPage() {
               </span>
             </div>
             {post.thumbnail && (
-              <div className="w-full aspect-video rounded-2xl overflow-hidden border border-stone-200 dark:border-stone-700">
-                <img src={post.thumbnail} alt={post.title} className="w-full h-full object-cover" />
+              <div className="w-full aspect-video rounded-2xl overflow-hidden border border-stone-200 dark:border-stone-700 relative">
+                <Image
+                  src={post.thumbnail}
+                  alt={post.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 768px"
+                  className="object-cover"
+                />
               </div>
             )}
           </div>

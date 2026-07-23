@@ -9,7 +9,9 @@
     "start": "node dist/server.js",
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed.ts",
-    "verify:api": "tsx scripts/verify.ts"
+    "verify:api": "tsx scripts/verify.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
@@ -27,6 +29,7 @@
     "@types/node": "^22.18.0",
     "@types/pg": "^8.15.5",
     "tsx": "^4.20.5",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^4.1.10"
   }
 }

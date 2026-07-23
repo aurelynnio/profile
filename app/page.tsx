@@ -2,6 +2,7 @@
 
 import React, { Suspense, useState, startTransition } from 'react';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -56,13 +57,13 @@ export default function HomePage() {
           </div>
           <div className="shrink-0">
             <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-stone-100 dark:ring-stone-800 border border-stone-200 dark:border-white/10 relative group">
-              <img
+              <Image
                 src="/img/av.png"
                 alt="Profile"
                 width={128}
                 height={128}
                 className="w-full h-full object-cover object-[center_35%] transition-transform duration-500 group-hover:scale-110"
-                fetchPriority="high"
+                priority
               />
             </div>
           </div>

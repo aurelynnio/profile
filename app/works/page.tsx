@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import Section from '@/components/section';
 import PageIntro from '@/components/page-intro';
 import { EmptyState, LoadingState } from '@/components/content-state';
@@ -14,10 +15,12 @@ const ProjectCard: React.FC<{
 }> = ({ project, buttonText }) => (
   <Link href={`/works/${project.slug}`} className="w-full group cursor-pointer block">
     <div className="w-full h-48 mb-4 overflow-hidden rounded-2xl border border-stone-200 dark:border-white/10 relative">
-      <img
-        src={project.thumbnail || '/images/placeholder.jpg'}
+      <Image
+        src={project.thumbnail || '/images/placeholder.svg'}
         alt={project.title}
-        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0 grayscale-[0.3]"
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0 grayscale-[0.3]"
       />
       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
     </div>

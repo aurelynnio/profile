@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { ExternalLink } from 'lucide-react';
 import Section from '@/components/section';
@@ -55,11 +56,13 @@ export default function WorkDetailPage() {
       </Section>
 
       <Section delay={0.2}>
-        <div className="w-full aspect-video rounded-2xl overflow-hidden border border-stone-200 dark:border-white/10 mb-10">
-          <img
-            src={project.thumbnail || '/images/placeholder.jpg'}
+        <div className="w-full aspect-video rounded-2xl overflow-hidden border border-stone-200 dark:border-white/10 mb-10 relative">
+          <Image
+            src={project.thumbnail || '/images/placeholder.svg'}
             alt={project.title}
-            className="w-full h-full object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover"
           />
         </div>
       </Section>

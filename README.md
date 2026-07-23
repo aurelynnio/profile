@@ -1,46 +1,36 @@
-# Profile Site (Supabase-only)
+# Profile Site
 
-## 1) Setup env
+Personal portfolio + writing site. Next.js App Router frontend, Express + Supabase content API.
 
-Create `.env` from `.env.example` and fill:
+## Structure
 
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
+- `app/` — Next.js App Router pages
+- `components/` — React components
+- `lib/`, `hooks/`, `stores/`, `messages/` — frontend modules
+- `shared/` — types shared between frontend and backend
+- `backend/` — Express API (see `backend/README.md`)
+- `public/` — static assets
 
-## 2) Create schema + policies
+## Setup
 
-Run SQL in [supabase/schema.sql](supabase/schema.sql) on Supabase SQL Editor.
-
-This creates:
-
-- `public.contents` (public read)
-- `public.admin_users` (allow-list for write access)
-- RLS policies so only authenticated users in `admin_users` can write
-
-## 3) Create admin user
-
-1. Create user in Supabase Auth (Dashboard -> Authentication -> Users).
-2. Insert that user id into `public.admin_users`:
-
-```sql
-insert into public.admin_users (user_id)
-values ('<AUTH_USER_UUID>')
-on conflict (user_id) do nothing;
-```
-
-## 4) Run app
+1. Copy `.env.example` to `.env` and fill `NEXT_PUBLIC_API_URL`.
+2. Start the backend (see `backend/README.md`).
+3. Install and run:
 
 ```bash
 npm install
-npm run dev
+npm run dev      # http://localhost:3000
 ```
 
-App reads content from Supabase.
+## Scripts
 
-## 5) Admin UI
+- `npm run dev` — dev server
+- `npm run build` — production build
+- `npm run start` — serve production build
+- `npm run lint` — ESLint
+- `npm run typecheck` — TypeScript check
+- `npm run analyze` — bundle report
 
-Open `/admin`.
+## Deployment
 
-- Sign in with Supabase Auth email/password.
-- CRUD data directly in `public.contents`.
-- First load asks for Supabase URL + anon key and stores them in `localStorage`.
+Frontend deploys to Vercel (see `vercel.json`). Backend deploys separately.

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 
 interface MarkdownRendererProps {
@@ -14,13 +15,24 @@ const MarkdownRenderer: React.FC<
     <div className="prose prose-stone dark:prose-invert max-w-none">
       <ReactMarkdown
         components={{
-          img: ({ node, ...props }) => (
-            <img
-              {...props}
-              className="rounded-lg shadow-md my-6 w-full object-cover max-h-[500px]"
-              loading="lazy"
-            />
-          ),
+          img: ({ node, ...props }) => {
+            const src =
+              typeof props.src === 'string' ? props.src : '';
+            const alt =
+              typeof props.alt === 'string' ? props.alt : '';
+            if (!src) return null;
+            return (
+              <span className="block relative w-full h-[400px] my-6 overflow-hidden rounded-lg shadow-md">
+                <Image
+                  src={src}
+                  alt={alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 768px"
+                  className="object-contain"
+                />
+              </span>
+            );
+          },
           h1: ({ node, ...props }) => (
             <h1
               {...props}
