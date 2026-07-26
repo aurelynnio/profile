@@ -1,6 +1,8 @@
 # Profile frontend
 
-This directory is a self-contained Next.js application. It is deployed independently of the API.
+Next.js application for the personal portfolio. Deployed independently of the content API.
+
+The backend API lives in a separate repository: [aurelynnio/profile-backend](https://github.com/aurelynnio/profile-backend).
 
 ## Local development
 
@@ -18,8 +20,7 @@ NEXT_PUBLIC_API_URL=https://profile-api.example.com/api
 
 ## Vercel deployment
 
-Create or update the Vercel project with **Root Directory** set to `frontend`.
-Vercel detects Next.js automatically; use the default install command and build command (`npm run build`).
+Import this repository as a Vercel project. The Root Directory is the repo root (no subdirectory needed) — Vercel detects Next.js automatically and uses the default install + build commands (`npm run build`).
 
 Set `NEXT_PUBLIC_API_URL` for Production, Preview, and Development as appropriate, then redeploy after changing it. This is a public browser variable, so it must not contain a secret.
 
