@@ -11,3 +11,10 @@ out/
 # TypeScript and logs
 *.tsbuildinfo
 *.log
+
+# Editor directories (keep extensions.json only)
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.swp
