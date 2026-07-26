@@ -2,7 +2,7 @@ import type {
   ContentInput,
   ContentRecord,
   ContentType,
-} from '../../../shared/content.js';
+} from '../types/content.js';
 import { supabase } from '../lib/supabase.js';
 
 type DatabaseContent = {

@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import { contentTypes, type ContentType } from '../../../shared/content.js';
+import { contentTypes, type ContentType } from '../types/content.js';
 import { contentService } from '../services/content.service.js';
 
 const isContentType = (value: string | string[]): value is ContentType =>

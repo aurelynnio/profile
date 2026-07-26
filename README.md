@@ -1,36 +1,30 @@
-# Profile Site
+# Profile platform
 
-Personal portfolio + writing site. Next.js App Router frontend, Express + Supabase content API.
+The repository contains two independently deployable applications:
 
-## Structure
+| Directory | Application | Deployment |
+| --- | --- | --- |
+| `frontend/` | Next.js portfolio and writing UI | Vercel, with Vercel Root Directory set to `frontend` |
+| `backend/` | Express content API backed by Supabase | Any Node.js/Docker host, deployed from `backend` |
 
-- `app/` — Next.js App Router pages
-- `components/` — React components
-- `lib/`, `hooks/`, `stores/`, `messages/` — frontend modules
-- `shared/` — types shared between frontend and backend
-- `backend/` — Express API (see `backend/README.md`)
-- `public/` — static assets
+Neither application is built or started by the other. They communicate only over the public API URL configured through environment variables.
 
-## Setup
+## Local development
 
-1. Copy `.env.example` to `.env` and fill `NEXT_PUBLIC_API_URL`.
-2. Start the backend (see `backend/README.md`).
-3. Install and run:
+Install dependencies separately once for each app:
 
 ```bash
-npm install
-npm run dev      # http://localhost:3000
+cd frontend && npm ci
+cd ../backend && npm ci
 ```
 
-## Scripts
+Run the API first (`npm run dev` in `backend`), then the frontend (`npm run dev` in `frontend`). Root shortcut commands are available as `npm run dev:frontend` and `npm run dev:backend`.
 
-- `npm run dev` — dev server
-- `npm run build` — production build
-- `npm run start` — serve production build
-- `npm run lint` — ESLint
-- `npm run typecheck` — TypeScript check
-- `npm run analyze` — bundle report
+## Deployment order
 
-## Deployment
+1. Deploy `backend/` and verify `/api/health`.
+2. Add the frontend domain to backend `CLIENT_ORIGINS`.
+3. Set Vercel's `NEXT_PUBLIC_API_URL` to the API's public `/api` URL.
+4. Deploy `frontend/` with Vercel Root Directory set to `frontend`.
 
-Frontend deploys to Vercel (see `vercel.json`). Backend deploys separately.
+Detailed instructions are in [frontend/README.md](frontend/README.md) and [backend/DEPLOYMENT.md](backend/DEPLOYMENT.md).

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { contentTypes } from '../../../shared/content.js';
+import { contentTypes } from '../types/content.js';
 
 export const contentTypeSchema = z.enum(contentTypes);
 

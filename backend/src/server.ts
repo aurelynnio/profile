@@ -8,7 +8,7 @@ import { errorHandler } from './middleware/error.middleware.js';
 
 export const app = express();
 
-app.use(cors({ origin: env.clientOrigin }));
+app.use(cors({ origin: env.clientOrigins }));
 app.use(express.json({ limit: '2mb' }));
 
 app.use('/api', healthRouter);

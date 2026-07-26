@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { worksData } from './seed-data/works.js';
 import { writingData } from './seed-data/writing.js';
 import { contentService } from '../src/services/content.service.js';
-import type { ContentInput, ContentType } from '../../shared/content.js';
+import type { ContentInput, ContentType } from '../src/types/content.js';
 
 type SeedItem = {
   slug: string;
