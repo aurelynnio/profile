@@ -1,5 +1,6 @@
 'use client';
 
+import { useCallback } from 'react';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { en, type TranslationKey } from '@/messages/en';
@@ -15,7 +16,6 @@ interface UiState {
   toggleLanguage: () => void;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
-  t: (key: TranslationKey) => string;
 }
 
 const dictionaries = { en, zh };
@@ -33,7 +33,7 @@ const applyThemeClass = (theme: Theme) => {
 
 export const useUiStore = create<UiState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       language: 'en',
       theme: getInitialTheme(),
       setLanguage: (language) => set({ language }),
@@ -49,15 +49,31 @@ export const useUiStore = create<UiState>()(
           applyThemeClass(next);
           return { theme: next };
         }),
-      t: (key) => {
-        const { language } = get();
-        return dictionaries[language][key] || en[key] || key;
-      },
     }),
     {
       name: 'profile-ui',
       storage: createJSONStorage(() => localStorage),
+      /**
+       * Persisted state is read after mount (see Providers) so that the first
+       * client render matches the server-rendered HTML and does not throw a
+       * hydration mismatch when a non-default language is stored.
+       */
+      skipHydration: true,
       partialize: (state) => ({ language: state.language, theme: state.theme }),
     },
   ),
 );
+
+/**
+ * Translator bound to the current language.
+ * Subscribes to `language`, so every component calling it re-renders when the
+ * language changes.
+ */
+export const useTranslation = () => {
+  const language = useUiStore((s) => s.language);
+
+  return useCallback(
+    (key: TranslationKey) => dictionaries[language][key] ?? en[key] ?? key,
+    [language],
+  );
+};

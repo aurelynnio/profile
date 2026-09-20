@@ -1,35 +1,30 @@
 import type { MetadataRoute } from 'next';
-import { apiClient } from '@/lib/api-client';
-import type { ContentCard } from '@/lib/content-types';
+import { works } from '@/lib/works';
+import { experiments } from '@/lib/experiments';
+import { writing } from '@/lib/writing';
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://example.com';
-  const staticRoutes = ['', '/works', '/posts'].map((path) => ({
+  const staticRoutes = ['', '/works', '/experiments', '/writing'].map((path) => ({
     url: `${base}${path}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: path === '' ? 1 : 0.8,
   }));
 
-  try {
-    const [works, posts] = await Promise.all([
-      apiClient.get<ContentCard[]>('/content/works'),
-      apiClient.get<ContentCard[]>('/content/writing'),
-    ]);
-    const workRoutes = works.data.map((item) => ({
-      url: `${base}/works/${item.slug}`,
-      lastModified: new Date(item.date),
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    }));
-    const postRoutes = posts.data.map((item) => ({
-      url: `${base}/posts/${item.slug}`,
-      lastModified: new Date(item.date),
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    }));
-    return [...staticRoutes, ...workRoutes, ...postRoutes];
-  } catch {
-    return staticRoutes;
-  }
+  const projectRoutes = [...works, ...experiments].map((item) => ({
+    url: `${base}/${item.kind === 'work' ? 'works' : 'experiments'}/${item.slug}`,
+    lastModified: new Date(item.date),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  const postRoutes = writing.map((item) => ({
+    url: `${base}/writing/${item.slug}`,
+    lastModified: new Date(item.date),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  return [...staticRoutes, ...projectRoutes, ...postRoutes];
 }

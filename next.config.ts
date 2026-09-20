@@ -10,9 +10,6 @@ const nextConfig: NextConfig = {
   // Keep file tracing scoped to this independently deployed frontend.
   outputFileTracingRoot: process.cwd(),
   images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: '**.supabase.co' },
-    ],
     dangerouslyAllowSVG: true,
   },
   experimental: {

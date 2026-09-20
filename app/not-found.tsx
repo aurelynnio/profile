@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import Section from '@/components/section';
-import { useUiStore } from '@/stores/ui-store';
+import { useTranslation } from '@/stores/ui-store';
 
 export default function NotFound() {
-  const t = useUiStore((s) => s.t);
+  const t = useTranslation();
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center pt-20">
       <Section>

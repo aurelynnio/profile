@@ -76,6 +76,14 @@
     @apply inline-flex items-center justify-center gap-2 rounded-full border border-cinnabar bg-cinnabar px-5 py-2.5 font-serif text-sm font-bold text-white transition-colors hover:bg-cinnabar-light hover:border-cinnabar-light;
   }
 
+  .button-jade {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-jade bg-jade px-5 py-2.5 font-serif text-sm font-bold text-white transition-colors hover:border-[#008f5b] hover:bg-[#008f5b];
+  }
+
+  .button-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-stone-300 dark:border-stone-600 px-5 py-2.5 font-serif text-sm font-bold text-stone-600 dark:text-stone-300 transition-colors hover:border-ink dark:hover:border-stone-300 hover:text-ink dark:hover:text-stone-100;
+  }
+
   .button-secondary {
     @apply inline-flex items-center gap-2 rounded-full px-1 text-sm font-medium text-stone-500 transition-colors hover:text-jade dark:text-stone-300;
   }

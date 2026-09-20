@@ -9,20 +9,6 @@ interface ContentStateProps {
   action?: { label: string; to: string };
 }
 
-export const LoadingState: React.FC<{
-  label?: string;
-}> = ({ label = 'Loading content…' }) => (
-  <div
-    className="flex min-h-48 items-center justify-center"
-    aria-live="polite"
-  >
-    <div className="flex items-center gap-3 text-sm text-stone-500 dark:text-stone-300">
-      <span className="h-5 w-5 animate-spin rounded-full border-2 border-stone-300 border-t-cinnabar dark:border-stone-600" />
-      {label}
-    </div>
-  </div>
-);
-
 export const EmptyState: React.FC<
   ContentStateProps
 > = ({ title, description, action }) => (

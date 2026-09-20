@@ -1,7 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
-export const alt = 'GuoYing — Digital Craftsman';
+export const alt = 'GuoYing — Full-Stack Web Developer';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -29,13 +28,13 @@ export default function OGImage() {
             marginBottom: 24,
           }}
         >
-          DIGITAL CRAFTSMAN
+          FULL-STACK WEB DEVELOPER
         </div>
         <div style={{ color: '#202023', fontSize: 96, fontWeight: 700 }}>
           GuoYing
         </div>
         <div style={{ color: '#8f7e6d', fontSize: 32, marginTop: 16 }}>
-          Web development · 3D · Creative coding
+          Web apps · UI experiments · Technical writing
         </div>
       </div>
     ),

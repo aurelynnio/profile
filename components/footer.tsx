@@ -1,10 +1,10 @@
 'use client';
 
-import { Github, Mail, Linkedin } from 'lucide-react';
-import { useUiStore } from '@/stores/ui-store';
+import { Github, Mail, Linkedin, Globe } from 'lucide-react';
+import { useTranslation } from '@/stores/ui-store';
 
 export default function Footer() {
-  const t = useUiStore((s) => s.t);
+  const t = useTranslation();
   return (
     <footer className="mt-32 pb-10 text-center text-stone-400 dark:text-stone-400 text-sm">
       <div className="flex justify-center space-x-8 mb-6">
@@ -13,6 +13,9 @@ export default function Footer() {
         </a>
         <a href="https://www.linkedin.com/in/tranphanquocanh/" aria-label="LinkedIn Profile" className="hover:text-jade transition-colors transform hover:scale-110 duration-300">
           <Linkedin size={20} strokeWidth={1.5} />
+        </a>
+        <a href="https://example.com" aria-label="Portfolio" className="hover:text-jade transition-colors transform hover:scale-110 duration-300">
+          <Globe size={20} strokeWidth={1.5} />
         </a>
         <a href="#" aria-label="Email Contact" className="hover:text-jade transition-colors transform hover:scale-110 duration-300">
           <Mail size={20} strokeWidth={1.5} />

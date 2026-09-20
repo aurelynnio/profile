@@ -15,10 +15,11 @@ const robotoMono = Roboto_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://example.com'),
   title: {
-    default: 'GuoYing | Digital Craftsman',
+    default: 'GuoYing | Full-Stack Web Developer',
     template: '%s | GuoYing',
   },
-  description: 'Digital Craftsman based in Vietnam. Portfolio of web development, 3D experiences, and creative coding.',
+  description:
+    'Full-stack web developer. An e-commerce marketplace, a railway booking system, a social platform, and a bilingual technical blog on the craft of building web applications.',
 };
 
 export const viewport: Viewport = {

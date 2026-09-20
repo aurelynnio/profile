@@ -17,6 +17,7 @@ import {
 } from '@react-three/drei';
 import { Group } from 'three';
 import { useInView } from 'framer-motion';
+import { useTranslation } from '@/stores/ui-store';
 
 const Loader = () => {
   return (
@@ -57,6 +58,7 @@ const CustomModel: React.FC<{ url: string }> = ({
 };
 
 const ScholarRock: React.FC = () => {
+  const t = useTranslation();
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, {
     margin: '100px',
@@ -139,7 +141,7 @@ const ScholarRock: React.FC = () => {
 
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 dark:text-stone-400 font-medium">
-          Automated Showcase
+          {t('home.showcase')}
         </p>
       </div>
     </div>

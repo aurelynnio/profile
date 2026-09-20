@@ -68,8 +68,19 @@ const MarkdownRenderer: React.FC<
                 />
               );
             }
-            return <code {...props} />;
+            return (
+              <code
+                {...props}
+                className="block font-mono text-[13px] leading-relaxed text-stone-700 dark:text-stone-200"
+              />
+            );
           },
+          pre: ({ node, ...props }) => (
+            <pre
+              {...props}
+              className="my-6 overflow-x-auto rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-100 dark:bg-stone-900 p-4"
+            />
+          ),
           p: ({ node, ...props }) => (
             <p
               {...props}

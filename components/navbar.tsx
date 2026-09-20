@@ -5,17 +5,18 @@ import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { clsx } from 'clsx';
 import ThemeToggle from './theme-toggle';
-import { useUiStore } from '@/stores/ui-store';
+import { useUiStore, useTranslation } from '@/stores/ui-store';
 
 const navItems = [
-  { path: '/', labelKey: 'nav.about' },
+  { path: '/', labelKey: 'nav.home' },
   { path: '/works', labelKey: 'nav.works' },
-  { path: '/posts', labelKey: 'nav.posts' },
+  { path: '/experiments', labelKey: 'nav.experiments' },
+  { path: '/writing', labelKey: 'nav.writing' },
 ] as const;
 
 export default function Navbar() {
   const pathname = usePathname();
-  const t = useUiStore((s) => s.t);
+  const t = useTranslation();
   const language = useUiStore((s) => s.language);
   const toggleLanguage = useUiStore((s) => s.toggleLanguage);
 
